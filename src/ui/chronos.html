@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="shared/theme.css">
+  <style>
+    .clock-display {
+      text-align: center;
+      margin: 10px 0;
+    }
+    .time-large {
+      font-size: 34px;
+      font-weight: 800;
+      font-family: 'Consolas', monospace;
+      letter-spacing: 2px;
+      color: var(--text-main);
+      text-shadow: 0 0 12px var(--accent-glow);
+    }
+    .date-sub {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      color: var(--accent-primary);
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+    .astronomy-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 8px 12px;
+      margin-top: 8px;
+    }
+    .astro-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      margin: 3px 0;
+    }
+  </style>
+</head>
+<body class="theme-elysium-cyan">
+  <div class="mythos-card">
+    <div class="drag-header pywebview-drag-region">
+      <div class="title-group">
+        <div class="greek-rune">⏳</div>
+        <div>
+          <div class="widget-title">CHRONOS</div>
+          <div class="widget-tag">CELESTIAL TRANSIT</div>
+        </div>
+      </div>
+      <div style="font-size: 11px; color: var(--accent-primary);" id="badge-period">OLYMPUS</div>
+    </div>
+
+    <div class="clock-display">
+      <div class="time-large" id="clock-time">00:00:00</div>
+      <div class="date-sub" id="clock-date">-- -- ----</div>
+    </div>
+
+    <div class="astronomy-box">
+      <div class="astro-row">
+        <span style="color: var(--text-dim);">DAY OF THE GODS</span>
+        <span style="font-weight: 700; color: var(--text-main);" id="greek-day">Σελήνης</span>
+      </div>
+      <div class="astro-row">
+        <span style="color: var(--text-dim);">LUNAR PHASE</span>
+        <span style="font-weight: 700; color: var(--accent-primary);" id="moon-phase">Waxing Gibbous</span>
+      </div>
+      <div class="astro-row">
+        <span style="color: var(--text-dim);">HELLENIC MONTH</span>
+        <span style="font-weight: 700; color: var(--text-main);" id="greek-month">Νοέμβριος</span>
+      </div>
+    </div>
+
+    <div style="margin-top: auto; display: flex; justify-content: space-between; font-size: 10px; color: var(--text-dim); font-family: monospace;">
+      <span>SUN TRANSIT: APOLLO</span>
+      <span id="tz-offset">UTC+6</span>
+    </div>
+  </div>
+
+  <script src="shared/widget.js"></script>
+  <script>
+    function updateTelemetry(data) {
+      if (!data || !data.clock) return;
+      document.getElementById('clock-time').innerText = data.clock.time;
+      document.getElementById('clock-date').innerText = data.clock.date;
+      document.getElementById('greek-day').innerText = data.clock.greek_day;
+      document.getElementById('greek-month').innerText = data.clock.greek_month;
+      document.getElementById('moon-phase').innerText = data.clock.moon;
+
+      const hr = data.clock.hour;
+      const period = (hr >= 6 && hr < 18) ? "HELIOS (DAY)" : "NYX (NIGHT)";
+      document.getElementById('badge-period').innerText = period;
+    }
+  </script>
+</body>
+</html>

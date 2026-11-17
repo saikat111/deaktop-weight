@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="shared/theme.css">
+</head>
+<body class="theme-elysium-cyan">
+  <div class="mythos-card">
+    <div class="drag-header pywebview-drag-region">
+      <div class="title-group">
+        <div class="greek-rune">⚒</div>
+        <div>
+          <div class="widget-title">HEPHAESTUS</div>
+          <div class="widget-tag">CORE TELEMETRY</div>
+        </div>
+      </div>
+      <div style="font-size: 11px; font-family: monospace; color: var(--accent-primary);" id="cpu-cores">6C / 12T</div>
+    </div>
+
+    <!-- Dual Gauges: CPU & RAM -->
+    <div class="gauge-container">
+      <div class="gauge-circle">
+        <svg viewBox="0 0 86 86">
+          <circle class="gauge-bg" cx="43" cy="43" r="35"></circle>
+          <circle class="gauge-progress" id="circle-cpu" cx="43" cy="43" r="35"></circle>
+        </svg>
+        <div class="gauge-content">
+          <div class="gauge-val" id="val-cpu">0%</div>
+          <div class="gauge-lbl">CPU</div>
+        </div>
+      </div>
+
+      <div class="gauge-circle">
+        <svg viewBox="0 0 86 86">
+          <circle class="gauge-bg" cx="43" cy="43" r="35"></circle>
+          <circle class="gauge-progress" id="circle-ram" cx="43" cy="43" r="35"></circle>
+        </svg>
+        <div class="gauge-content">
+          <div class="gauge-val" id="val-ram">0%</div>
+          <div class="gauge-lbl">RAM</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Frequency & Power stats -->
+    <div class="stat-row">
+      <span class="stat-label">CLOCK SPEED</span>
+      <span class="stat-val" id="val-freq">3,600 MHz</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">RAM ALLOCATED</span>
+      <span class="stat-val" id="val-ram-gb">0.0 / 8.0 GB</span>
+    </div>
+
+    <!-- Storage / Disk -->
+    <div style="margin-top: 10px;">
+      <div class="stat-row">
+        <span class="stat-label">SYSTEM DRIVE (C:)</span>
+        <span class="stat-val" id="val-disk-free">-- GB Free</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-bar" id="bar-disk" style="width: 0%;"></div>
+      </div>
+    </div>
+
+    <div style="margin-top: auto; font-size: 10px; color: var(--text-dim); text-align: center; letter-spacing: 1px; font-family: monospace;">
+      ZEN 3 CEZANNE // LIQUID COOLED
+    </div>
+  </div>
+
+  <script src="shared/widget.js"></script>
+  <script>
+    function updateTelemetry(data) {
+      if (!data) return;
+      
+      // CPU
+      const cpu = data.cpu.percent;
+      document.getElementById('val-cpu').innerText = `${Math.round(cpu)}%`;
+      setGauge(document.getElementById('circle-cpu'), cpu);
+      document.getElementById('val-freq').innerText = `${data.cpu.freq_mhz.toLocaleString()} MHz`;
+      document.getElementById('cpu-cores').innerText = `${data.cpu.cores} THREADS`;
+
+      // RAM
+      const ram = data.ram.percent;
+      document.getElementById('val-ram').innerText = `${Math.round(ram)}%`;
+      setGauge(document.getElementById('circle-ram'), ram);
+      document.getElementById('val-ram-gb').innerText = `${data.ram.used_gb} / ${data.ram.total_gb} GB`;
+
+      // Disk
+      const disk = data.disk.percent;
+      document.getElementById('bar-disk').style.width = `${disk}%`;
+      document.getElementById('val-disk-free').innerText = `${data.disk.free_gb} GB Free (${disk}%)`;
+    }
+  </script>
+</body>
+</html>

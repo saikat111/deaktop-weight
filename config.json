@@ -1,0 +1,50 @@
+{
+  "theme": "elysium_cyan",
+  "opacity": 0.92,
+  "locked": false,
+  "refresh_rate_ms": 1000,
+  "widgets": {
+    "hub": {
+      "enabled": true,
+      "x": 20,
+      "y": 40,
+      "width": 380,
+      "height": 95
+    },
+    "hephaestus": {
+      "enabled": true,
+      "x": 20,
+      "y": 150,
+      "width": 360,
+      "height": 380
+    },
+    "chronos": {
+      "enabled": true,
+      "x": 1520,
+      "y": 40,
+      "width": 360,
+      "height": 320
+    },
+    "zeus": {
+      "enabled": true,
+      "x": 1520,
+      "y": 380,
+      "width": 360,
+      "height": 260
+    },
+    "hermes": {
+      "enabled": true,
+      "x": 20,
+      "y": 550,
+      "width": 360,
+      "height": 280
+    },
+    "oracle": {
+      "enabled": true,
+      "x": 1520,
+      "y": 660,
+      "width": 360,
+      "height": 320
+    }
+  }
+}

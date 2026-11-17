@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="shared/theme.css">
+  <style>
+    body { padding: 4px; }
+    .hub-container {
+      background: var(--bg-obsidian);
+      border: 1px solid var(--accent-primary);
+      border-radius: 8px;
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.7), 0 0 12px var(--accent-glow);
+      backdrop-filter: blur(16px);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: grab;
+    }
+    .brand:active { cursor: grabbing; }
+    .brand-name {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--text-main);
+      text-transform: uppercase;
+    }
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .hub-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .hub-btn:hover {
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 8px var(--accent-glow);
+      color: var(--accent-primary);
+    }
+    .hub-btn.active {
+      border-color: var(--accent-primary);
+      background: var(--accent-soft);
+      color: var(--accent-primary);
+    }
+  </style>
+</head>
+<body class="theme-elysium-cyan">
+  <div class="hub-container">
+    <div class="brand pywebview-drag-region">
+      <div class="greek-rune">Ω</div>
+      <div class="brand-name">AEGIS HUD</div>
+    </div>
+    <div class="actions">
+      <button class="hub-btn active" id="btn-forge" onclick="toggle('hephaestus')">FORGE</button>
+      <button class="hub-btn active" id="btn-time" onclick="toggle('chronos')">CHRONOS</button>
+      <button class="hub-btn active" id="btn-sky" onclick="toggle('zeus')">ZEUS</button>
+      <button class="hub-btn active" id="btn-net" onclick="toggle('hermes')">HERMES</button>
+      <button class="hub-btn active" id="btn-codex" onclick="toggle('oracle')">ORACLE</button>
+      <button class="hub-btn" title="Cycle Theme" onclick="cycleTheme()">THEME</button>
+      <button class="hub-btn" style="color:#ff4444; border-color:rgba(255,68,68,0.4);" onclick="quit()">✕</button>
+    </div>
+  </div>
+
+  <script src="shared/widget.js"></script>
+  <script>
+    const themes = ["elysium_cyan", "tartarus_crimson", "hades_violet", "spartan_silver"];
+    let currentThemeIdx = 0;
+
+    function toggle(widgetName) {
+      if (window.pywebview && window.pywebview.api) {
+        window.pywebview.api.toggle_widget(widgetName);
+      }
+    }
+
+    function cycleTheme() {
+      currentThemeIdx = (currentThemeIdx + 1) % themes.length;
+      const t = themes[currentThemeIdx];
+      updateTheme(t);
+      if (window.pywebview && window.pywebview.api) {
+        window.pywebview.api.set_theme(t);
+      }
+    }
+
+    function quit() {
+      if (window.pywebview && window.pywebview.api) {
+        window.pywebview.api.close_all();
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="shared/theme.css">
+  <style>
+    .weather-main {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 8px 0;
+      padding: 0 8px;
+    }
+    .temp-large {
+      font-size: 38px;
+      font-weight: 800;
+      font-family: 'Consolas', monospace;
+      color: var(--text-main);
+      text-shadow: 0 0 14px var(--accent-glow);
+    }
+    .condition-text {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--accent-primary);
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+    .city-label {
+      font-size: 11px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .weather-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .weather-cell {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 6px;
+      text-align: center;
+    }
+    .cell-val {
+      font-size: 13px;
+      font-weight: 700;
+      font-family: 'Consolas', monospace;
+      color: var(--text-main);
+    }
+    .cell-lbl {
+      font-size: 9px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 2px;
+    }
+  </style>
+</head>
+<body class="theme-elysium-cyan">
+  <div class="mythos-card">
+    <div class="drag-header pywebview-drag-region">
+      <div class="title-group">
+        <div class="greek-rune">⚡</div>
+        <div>
+          <div class="widget-title">ZEUS AEGIS</div>
+          <div class="widget-tag">SKY & TEMPEST</div>
+        </div>
+      </div>
+      <div style="font-size: 11px; font-weight: 700; color: var(--accent-primary);" id="weather-city">OLYMPUS</div>
+    </div>
+
+    <div class="weather-main">
+      <div>
+        <div class="temp-large" id="weather-temp">24°C</div>
+        <div class="condition-text" id="weather-condition">Clear Sky</div>
+      </div>
+      <div style="font-size: 42px; filter: drop-shadow(0 0 10px var(--accent-primary));">
+        ⚡
+      </div>
+    </div>
+
+    <div class="weather-grid">
+      <div class="weather-cell">
+        <div class="cell-val" id="weather-humidity">45%</div>
+        <div class="cell-lbl">HUMIDITY</div>
+      </div>
+      <div class="weather-cell">
+        <div class="cell-val" id="weather-wind">12 km/h</div>
+        <div class="cell-lbl">WIND</div>
+      </div>
+      <div class="weather-cell">
+        <div class="cell-val" id="weather-pressure">1013 hPa</div>
+        <div class="cell-lbl">PRESSURE</div>
+      </div>
+    </div>
+
+    <div style="margin-top: auto; font-size: 10px; color: var(--text-dim); text-align: center; letter-spacing: 1px; font-family: monospace;">
+      ATMOSPHERIC ORACLE // LIVE SATELLITE
+    </div>
+  </div>
+
+  <script src="shared/widget.js"></script>
+  <script>
+    function updateTelemetry(data) {
+      if (!data || !data.weather) return;
+      document.getElementById('weather-temp').innerText = `${data.weather.temp}°C`;
+      document.getElementById('weather-condition').innerText = data.weather.condition;
+      document.getElementById('weather-city').innerText = data.weather.city.toUpperCase();
+      document.getElementById('weather-humidity').innerText = `${data.weather.humidity}%`;
+      document.getElementById('weather-wind').innerText = `${data.weather.wind} km/h`;
+      document.getElementById('weather-pressure').innerText = `${data.weather.pressure} hPa`;
+    }
+  </script>
+</body>
+</html>

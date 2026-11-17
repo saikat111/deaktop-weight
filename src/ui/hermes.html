@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="shared/theme.css">
+  <style>
+    .net-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 10px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .net-stat {
+      text-align: center;
+    }
+    .net-val {
+      font-size: 17px;
+      font-weight: 800;
+      font-family: 'Consolas', monospace;
+      color: var(--text-main);
+    }
+    .net-lbl {
+      font-size: 9px;
+      letter-spacing: 1px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+  </style>
+</head>
+<body class="theme-elysium-cyan">
+  <div class="mythos-card">
+    <div class="drag-header pywebview-drag-region">
+      <div class="title-group">
+        <div class="greek-rune">🪽</div>
+        <div>
+          <div class="widget-title">HERMES</div>
+          <div class="widget-tag">PORTALS & NETWORK</div>
+        </div>
+      </div>
+      <div style="font-size: 11px; font-weight: 700; color: var(--accent-primary);">LINK: ONLINE</div>
+    </div>
+
+    <!-- Live Network Throughput -->
+    <div class="net-box">
+      <div class="net-stat">
+        <div class="net-val" id="net-down">0.0 KB/s</div>
+        <div class="net-lbl">⬇ DOWNLOAD (IN)</div>
+      </div>
+      <div style="width: 1px; height: 28px; background: var(--border-subtle);"></div>
+      <div class="net-stat">
+        <div class="net-val" id="net-up">0.0 KB/s</div>
+        <div class="net-lbl">⬆ UPLOAD (OUT)</div>
+      </div>
+    </div>
+
+    <div style="font-size: 10px; font-weight: 700; color: var(--text-dim); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px;">
+      DIVINE PORTALS // QUICK LAUNCH
+    </div>
+
+    <!-- 4 Portals -->
+    <div class="btn-grid">
+      <div class="btn-mythos" onclick="launch('powershell')">
+        <span style="font-size: 16px;">⚡</span>
+        <span>TERMINAL</span>
+      </div>
+      <div class="btn-mythos" onclick="launch('chrome')">
+        <span style="font-size: 16px;">🌐</span>
+        <span>BROWSER</span>
+      </div>
+      <div class="btn-mythos" onclick="launch('taskmgr')">
+        <span style="font-size: 16px;">📊</span>
+        <span>TASK MGR</span>
+      </div>
+      <div class="btn-mythos" onclick="launch('docker')">
+        <span style="font-size: 16px;">🐳</span>
+        <span>DOCKER</span>
+      </div>
+    </div>
+
+    <div style="margin-top: auto; font-size: 10px; color: var(--text-dim); text-align: center; letter-spacing: 1px; font-family: monospace;">
+      ETHERNET / WI-FI 2.4G & 5G
+    </div>
+  </div>
+
+  <script src="shared/widget.js"></script>
+  <script>
+    function updateTelemetry(data) {
+      if (!data || !data.net) return;
+      const down = data.net.down_kb;
+      const up = data.net.up_kb;
+
+      const downStr = down > 1024 ? `${(down / 1024).toFixed(1)} MB/s` : `${down} KB/s`;
+      const upStr = up > 1024 ? `${(up / 1024).toFixed(1)} MB/s` : `${up} KB/s`;
+
+      document.getElementById('net-down').innerText = downStr;
+      document.getElementById('net-up').innerText = upStr;
+    }
+
+    function launch(appName) {
+      if (window.pywebview && window.pywebview.api) {
+        window.pywebview.api.launch_app(appName);
+      }
+    }
+  </script>
+</body>
+</html>

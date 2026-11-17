@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="shared/theme.css">
+  <style>
+    .quote-box {
+      background: var(--bg-card);
+      border-left: 2px solid var(--accent-primary);
+      padding: 10px 12px;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+    .quote-text {
+      font-size: 12px;
+      font-style: italic;
+      line-height: 1.45;
+      color: var(--text-main);
+    }
+    .quote-author {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: var(--accent-primary);
+      text-transform: uppercase;
+      margin-top: 6px;
+      text-align: right;
+    }
+    .scratchpad-area {
+      flex: 1;
+      width: 100%;
+      background: rgba(14, 18, 26, 0.75);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      color: var(--text-main);
+      padding: 8px 10px;
+      font-size: 11px;
+      font-family: 'Consolas', monospace;
+      resize: none;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .scratchpad-area:focus {
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 8px var(--accent-glow);
+    }
+  </style>
+</head>
+<body class="theme-elysium-cyan">
+  <div class="mythos-card">
+    <div class="drag-header pywebview-drag-region">
+      <div class="title-group">
+        <div class="greek-rune">📜</div>
+        <div>
+          <div class="widget-title">ORACLE OF DELPHI</div>
+          <div class="widget-tag">STOIC CODEX & NOTES</div>
+        </div>
+      </div>
+      <div style="font-size: 10px; color: var(--accent-primary);">PYTHIA</div>
+    </div>
+
+    <!-- Daily Stoic Epigram -->
+    <div class="quote-box">
+      <div class="quote-text" id="quote-body">"You have power over your mind - not outside events. Realize this, and you will find strength."</div>
+      <div class="quote-author" id="quote-author">— MARCUS AURELIUS</div>
+    </div>
+
+    <div style="font-size: 10px; font-weight: 700; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px;">
+      HERMETIC PARCHMENT // QUICK NOTES
+    </div>
+
+    <!-- Scratchpad -->
+    <textarea class="scratchpad-area" id="notes-input" placeholder="Type quick tasks or divine notes here... (auto-saved)"></textarea>
+
+    <div style="margin-top: 6px; display: flex; justify-content: space-between; font-size: 9px; color: var(--text-dim); font-family: monospace;">
+      <span>PERSISTENT LOCAL STORAGE</span>
+      <span id="save-status">SAVED</span>
+    </div>
+  </div>
+
+  <script src="shared/widget.js"></script>
+  <script>
+    const notesInput = document.getElementById('notes-input');
+    const saveStatus = document.getElementById('save-status');
+
+    // Load saved notes
+    const saved = localStorage.getItem('delphi_notes');
+    if (saved) notesInput.value = saved;
+
+    notesInput.addEventListener('input', function() {
+      localStorage.setItem('delphi_notes', notesInput.value);
+      saveStatus.innerText = 'SAVING...';
+      setTimeout(() => { saveStatus.innerText = 'SAVED'; }, 400);
+    });
+
+    function updateTelemetry(data) {
+      if (!data || !data.quote) return;
+      document.getElementById('quote-body').innerText = `"${data.quote.quote}"`;
+      document.getElementById('quote-author').innerText = `— ${data.quote.author.toUpperCase()}`;
+    }
+  </script>
+</body>
+</html>
