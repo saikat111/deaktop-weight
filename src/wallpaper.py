@@ -110,11 +110,19 @@ def generate_mythos_wallpaper(theme_name="elysium_cyan", width=1920, height=1080
     img = Image.alpha_composite(img.convert("RGBA"), overlay)
     
     # Save to wallpapers dir
-    wallpapers_dir = os.path.join(os.path.dirname(__file__), "assets", "wallpapers")
-    os.makedirs(wallpapers_dir, exist_ok=True)
+    wallpapers_dir = get_wallpapers_dir()
     out_path = os.path.join(wallpapers_dir, f"mythos_{theme_name}.png")
     img.save(out_path, "PNG")
     return out_path
+
+def get_wallpapers_dir():
+    import sys
+    if getattr(sys, 'frozen', False):
+        d = os.path.join(os.path.dirname(sys.executable), "assets", "wallpapers")
+    else:
+        d = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "wallpapers")
+    os.makedirs(d, exist_ok=True)
+    return d
 
 def apply_windows_wallpaper(image_path):
     """Sets the active Windows desktop wallpaper immediately using Win32 API."""
@@ -133,7 +141,7 @@ def apply_windows_wallpaper(image_path):
 
 def set_theme_wallpaper(theme_name):
     """Generates and sets the matching Cyber-Hellenic wallpaper on Windows."""
-    wallpapers_dir = os.path.join(os.path.dirname(__file__), "assets", "wallpapers")
+    wallpapers_dir = get_wallpapers_dir()
     target_file = os.path.join(wallpapers_dir, f"mythos_{theme_name}.png")
     if not os.path.exists(target_file):
         target_file = generate_mythos_wallpaper(theme_name)

@@ -10,9 +10,19 @@ import threading
 import webview
 
 # Add current and parent dir to path
-CURR_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.dirname(CURR_DIR)
+if getattr(sys, 'frozen', False):
+    EXE_DIR = os.path.dirname(sys.executable)
+    BUNDLE_DIR = getattr(sys, '_MEIPASS', EXE_DIR)
+    PROJECT_ROOT = EXE_DIR
+    CURR_DIR = os.path.join(BUNDLE_DIR, "src")
+else:
+    CURR_DIR = os.path.dirname(os.path.abspath(__file__))
+    PROJECT_ROOT = os.path.dirname(CURR_DIR)
+    BUNDLE_DIR = PROJECT_ROOT
+
 sys.path.insert(0, PROJECT_ROOT)
+if BUNDLE_DIR not in sys.path:
+    sys.path.insert(0, BUNDLE_DIR)
 
 from src.telemetry import TelemetryCollector
 from src.wallpaper import set_theme_wallpaper, set_custom_wallpaper
@@ -36,7 +46,10 @@ DEFAULT_APPS = [
 
 def load_config():
     try:
-        with open(CONFIG_PATH, "r", encoding="utf-8") as f:
+        target_path = CONFIG_PATH
+        if not os.path.exists(target_path) and os.path.exists(os.path.join(BUNDLE_DIR, "config.json")):
+            target_path = os.path.join(BUNDLE_DIR, "config.json")
+        with open(target_path, "r", encoding="utf-8") as f:
             cfg = json.load(f)
             if "apps" not in cfg or not cfg["apps"]:
                 cfg["apps"] = DEFAULT_APPS
@@ -230,7 +243,11 @@ class MythosWindowManager:
 
     def build_url(self, filename):
         path = os.path.join(CURR_DIR, "ui", filename)
-        return "file:///" + path.replace("\\", "/")
+        if not os.path.exists(path):
+            path = os.path.join(BUNDLE_DIR, "src", "ui", filename)
+        if not os.path.exists(path):
+            path = os.path.join(PROJECT_ROOT, "src", "ui", filename)
+        return "file:///" + os.path.abspath(path).replace("\\", "/")
 
     def broadcast_theme(self, theme_name):
         for name, win in self.windows.items():
