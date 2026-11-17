@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hephaestus Dev Cockpit</title>
+  <link rel="stylesheet" href="shared/theme.css">
+  <style>
+    .dev-section {
+      margin-bottom: 10px;
+    }
+    .dev-title {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-dim);
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .badge-val {
+      font-family: 'Consolas', monospace;
+      color: var(--accent-primary);
+      font-size: 10px;
+    }
+    .container-list {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+      padding: 6px;
+      font-family: 'Consolas', monospace;
+      font-size: 10px;
+      max-height: 50px;
+      overflow-y: auto;
+      color: var(--text-dim);
+    }
+    .container-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 2px 0;
+    }
+  </style>
+</head>
+<body class="theme-elysium-cyan">
+  <div class="mythos-card">
+    <div class="drag-header pywebview-drag-region">
+      <div class="title-group">
+        <span class="greek-rune">&#9881;</span>
+        <span class="widget-title">DEV COCKPIT</span>
+      </div>
+      <span class="widget-tag" id="ping-badge">PING --ms</span>
+    </div>
+
+    <!-- Notification Toast Banner -->
+    <div id="notification-banner" class="notification-banner"></div>
+
+    <!-- Section 1: Port Sentinel -->
+    <div class="dev-section">
+      <div class="dev-title">
+        <span>LOCAL PORT SENTINEL</span>
+        <span class="badge-val">LIVE PROBE</span>
+      </div>
+      <div class="port-grid">
+        <div class="port-pill" onclick="openUrl('http://localhost:3000')">
+          <span>:3000</span>
+          <div class="status-dot" id="dot-3000"></div>
+        </div>
+        <div class="port-pill" onclick="openUrl('http://localhost:3050')">
+          <span>:3050</span>
+          <div class="status-dot" id="dot-3050"></div>
+        </div>
+        <div class="port-pill" onclick="openUrl('http://localhost:8000')">
+          <span>:8000</span>
+          <div class="status-dot" id="dot-8000"></div>
+        </div>
+        <div class="port-pill" onclick="openUrl('http://localhost:8080')">
+          <span>:8080</span>
+          <div class="status-dot" id="dot-8080"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Docker Containers & Git Repo -->
+    <div class="dev-section">
+      <div class="dev-title">
+        <span>DOCKER & GIT REPOSITORY</span>
+        <span class="badge-val" id="git-status">main: Syncd</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Active Containers:</span>
+        <span class="stat-val" id="docker-count">0 / 0</span>
+      </div>
+      <div class="container-list" id="docker-names">
+        <div>No active containers running</div>
+      </div>
+    </div>
+
+    <!-- Section 3: Spartan Combat Focus Timer (Pomodoro) -->
+    <div class="dev-section">
+      <div class="dev-title">
+        <span>SPARTAN COMBAT FOCUS</span>
+        <span class="badge-val" id="focus-status">READY</span>
+      </div>
+      <div class="focus-timer-box">
+        <span class="focus-display" id="focus-display">25:00</span>
+        <div style="display:flex; gap:6px;">
+          <button class="focus-btn" onclick="toggleFocus()" id="focus-btn">ENGAGE</button>
+          <button class="focus-btn" onclick="resetFocus()" style="border-color:var(--border-subtle);">RESET</button>
+        </div>
+      </div>
+      <div class="progress-track">
+        <div class="progress-bar" id="focus-bar" style="width: 0%;"></div>
+      </div>
+    </div>
+
+    <!-- Quick Tool Launcher -->
+    <div class="btn-grid" style="grid-template-columns: repeat(3, 1fr); margin-top: auto;">
+      <button class="btn-mythos" onclick="launchApp('vscode')">
+        <span>VS CODE</span>
+      </button>
+      <button class="btn-mythos" onclick="launchApp('terminal')">
+        <span>TERMINAL</span>
+      </button>
+      <button class="btn-mythos" onclick="launchApp('docker')">
+        <span>DOCKER</span>
+      </button>
+    </div>
+  </div>
+
+  <script src="shared/widget.js"></script>
+  <script>
+    function toggleFocus() {
+      if (window.pywebview && window.pywebview.api) {
+        window.pywebview.api.toggle_focus();
+      }
+    }
+
+    function resetFocus() {
+      if (window.pywebview && window.pywebview.api) {
+        window.pywebview.api.reset_focus();
+      }
+    }
+
+    function updateTelemetry(data) {
+      if (!data) return;
+
+      // 1. Port Sentinel
+      if (data.dev && data.dev.ports) {
+        for (const [port, isActive] of Object.entries(data.dev.ports)) {
+          const dot = document.getElementById(`dot-${port}`);
+          if (dot) {
+            dot.className = isActive ? 'status-dot active' : 'status-dot';
+          }
+        }
+      }
+
+      // 2. Docker & Git
+      if (data.dev && data.dev.docker) {
+        document.getElementById('docker-count').innerText = `${data.dev.docker.running} Running / ${data.dev.docker.total} Total`;
+        const listEl = document.getElementById('docker-names');
+        if (data.dev.docker.names && data.dev.docker.names.length > 0) {
+          listEl.innerHTML = data.dev.docker.names.map(n => `<div class="container-item"><span>${n}</span><span style="color:#10b981">● Up</span></div>`).join('');
+        } else {
+          listEl.innerHTML = '<div>Docker Engine standby</div>';
+        }
+      }
+
+      if (data.dev && data.dev.git) {
+        document.getElementById('git-status').innerText = `${data.dev.git.branch}: ${data.dev.git.status}`;
+      }
+
+      // 3. Ping Radar
+      if (data.ping) {
+        document.getElementById('ping-badge').innerText = `PING ${data.ping.ms}ms`;
+      }
+
+      // 4. Focus Timer
+      if (data.focus) {
+        document.getElementById('focus-display').innerText = data.focus.display;
+        document.getElementById('focus-bar').style.width = `${data.focus.percent}%`;
+        const btn = document.getElementById('focus-btn');
+        if (btn) btn.innerText = data.focus.active ? 'PAUSE' : 'ENGAGE';
+        document.getElementById('focus-status').innerText = data.focus.active ? 'IN COMBAT' : 'PAUSED';
+      }
+
+      // 5. Alerts Toast
+      if (data.alerts && data.alerts.length > 0) {
+        showNotification(data.alerts[0].title, data.alerts[0].msg, data.alerts[0].type);
+      }
+    }
+  </script>
+</body>
+</html>

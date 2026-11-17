@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pantheon App Launcher</title>
+  <link rel="stylesheet" href="shared/theme.css">
+  <style>
+    .category-tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+    .tab-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-dim);
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tab-btn.active, .tab-btn:hover {
+      border-color: var(--accent-primary);
+      color: var(--text-main);
+      background: var(--accent-soft);
+    }
+  </style>
+</head>
+<body class="theme-elysium-cyan">
+  <div class="mythos-card">
+    <div class="drag-header pywebview-drag-region">
+      <div class="title-group">
+        <span class="greek-rune">&#9776;</span>
+        <span class="widget-title">PANTHEON APPS</span>
+      </div>
+      <span class="widget-tag" id="app-count">12 APPS</span>
+    </div>
+
+    <!-- Search Bar -->
+    <input 
+      type="text" 
+      id="app-search" 
+      class="search-input" 
+      placeholder="Search command or application..." 
+      onkeyup="filterApps()"
+    />
+
+    <!-- Category Tabs -->
+    <div class="category-tabs">
+      <button class="tab-btn active" onclick="filterCategory('all', this)">ALL</button>
+      <button class="tab-btn" onclick="filterCategory('dev', this)">DEVELOPER</button>
+      <button class="tab-btn" onclick="filterCategory('game', this)">GAMING</button>
+      <button class="tab-btn" onclick="filterCategory('sys', this)">SYSTEM</button>
+    </div>
+
+    <!-- Apps Grid -->
+    <div class="apps-grid" id="apps-container">
+      <!-- Dev -->
+      <div class="app-tile" data-cat="dev" data-name="vscode code visual studio" onclick="launchApp('vscode')">
+        <svg class="app-icon" viewBox="0 0 24 24"><path d="M23 5.5l-6-4.5-9.5 7.5L3 5 0 7.5l6 4.5-6 4.5 3 2.5 4.5-3.5L17 23l6-4.5V5.5zm-6 12.3L10.2 12 17 6.2v11.6z"/></svg>
+        <span class="app-name">VS Code</span>
+      </div>
+
+      <div class="app-tile" data-cat="dev" data-name="terminal powershell pwsh console" onclick="launchApp('terminal')">
+        <svg class="app-icon" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-8 12.5H7.5v-1.5H12v1.5zm-5-3.5l3.5-3.5L7 6l1.4-1.4 4.9 4.9-4.9 4.9L7 13z"/></svg>
+        <span class="app-name">Terminal</span>
+      </div>
+
+      <div class="app-tile" data-cat="dev" data-name="docker desktop containers" onclick="launchApp('docker')">
+        <svg class="app-icon" viewBox="0 0 24 24"><path d="M13.9 11.5h-1.8V9.7h1.8v1.8zm-2.4 0H9.7V9.7h1.8v1.8zm-2.4 0H7.3V9.7h1.8v1.8zm7.2 0H14.5V9.7h1.8v1.8zm-4.8-2.4H9.7V7.3h1.8v1.8zm2.4 0h-1.8V7.3h1.8v1.8zm-4.8 0H7.3V7.3h1.8v1.8zm7.2 0H14.5V7.3h1.8v1.8zM24 12c-.5-.4-1.8-.4-2.8.2-1.3-.9-3-.4-3.7.1-.1-2.2-1.8-3.9-3.9-3.9h-.7V7.3c0-.6-.5-1.1-1.1-1.1h-7.8c-.6 0-1.1.5-1.1 1.1v4.3H1.8C.8 11.6 0 12.4 0 13.4c0 4.7 3.8 8.6 8.6 8.6 4.4 0 8.1-3.3 8.5-7.7.8.2 2.6.2 4.1-.9.8.7 1.8.8 2.8.4.1-.6-.2-1.3-.8-1.8z"/></svg>
+        <span class="app-name">Docker</span>
+      </div>
+
+      <div class="app-tile" data-cat="dev" data-name="git bash git-scm" onclick="launchApp('gitbash')">
+        <svg class="app-icon" viewBox="0 0 24 24"><path d="M2.6 10.6L10.6 2.6a2 2 0 0 1 2.8 0l8 8a2 2 0 0 1 0 2.8l-8 8a2 2 0 0 1-2.8 0l-8-8a2 2 0 0 1 0-2.8zm10.8 4.2v-2.3a2.5 2.5 0 0 0-2.5-2.5H8.5v2.5h2.4a1 1 0 0 1 1 1v1.3a2 2 0 1 0 1.5 0z"/></svg>
+        <span class="app-name">Git Bash</span>
+      </div>
+
+      <!-- Gaming -->
+      <div class="app-tile" data-cat="game" data-name="steam games valve" onclick="launchApp('steam')">
+        <svg class="app-icon" viewBox="0 0 24 24"><path d="M12 0a12 12 0 0 0-12 12c0 5.4 3.6 9.9 8.6 11.4l3.1-4.3c-.4-.4-.7-.9-.8-1.5L7.7 16c-1.4.1-2.7-.9-2.8-2.3-.2-1.5 1-2.8 2.5-2.8h.4l3.6-2.6c0-.4.1-.7.2-1.1C12.5 4.9 14.5 4 16.8 5.2c2.3 1.2 3.2 3.8 2.1 6.1-1.1 2.3-3.8 3.2-6.1 2.1l-4.5 2.4c0 .3.1.6.1.9 0 2.2-1.8 4-4 4l-.4-.1L12 24a12 12 0 0 0 12-12A12 12 0 0 0 12 0z"/></svg>
+        <span class="app-name">Steam</span>
+      </div>
+
+      <div class="app-tile" data-cat="game" data-name="discord chat voice call" onclick="launchApp('discord')">
+        <svg class="app-icon" viewBox="0 0 24 24"><path d="M20.3 4.4A19.8 19.8 0 0 0 15.3 2.8a.1.1 0 0 0-.1.1 13.8 13.8 0 0 0-.6 1.3 18.3 18.3 0 0 0-5.2 0 14 14 0 0 0-.6-1.3.1.1 0 0 0-.1-.1 19.8 19.8 0 0 0-5 1.6.1.1 0 0 0-.1.1C1 9.9.2 15.2.6 20.4a.1.1 0 0 0 .1.1 19.9 19.9 0 0 0 6 3 .1.1 0 0 0 .1 0c.5-.7.9-1.4 1.3-2.1a.1.1 0 0 0-.1-.1c-.7-.3-1.3-.6-2-.9a.1.1 0 0 1 0-.2c.1-.1.3-.2.4-.3a14.2 14.2 0 0 0 11.4 0c.1.1.3.2.4.3a.1.1 0 0 1 0 .2c-.6.4-1.3.7-2 .9a.1.1 0 0 0-.1.1c.4.7.8 1.4 1.3 2.1a.1.1 0 0 0 .1 0 19.9 19.9 0 0 0 6-3 .1.1 0 0 0 .1-.1c.5-6-.9-11.2-3.3-15.9a.1.1 0 0 0-.1-.1zM8.5 16.5c-1.2 0-2.2-1.1-2.2-2.5s1-2.5 2.2-2.5c1.2 0 2.2 1.1 2.2 2.5s-1 2.5-2.2 2.5zm7 0c-1.2 0-2.2-1.1-2.2-2.5s1-2.5 2.2-2.5c1.2 0 2.2 1.1 2.2 2.5s-1 2.5-2.2 2.5z"/></svg>
+        <span class="app-name">Discord</span>
+      </div>
+
+      <div class="app-tile" data-cat="game" data-name="spotify music audio tunes" onclick="launchApp('spotify')">
+        <svg class="app-icon" viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.5 17.3c-.2.4-.7.5-1.1.3-3-1.8-6.8-2.3-11.3-1.2-.5.1-.9-.2-1-.7s.2-.9.7-1c4.9-1.1 9.1-.6 12.4 1.5.4.2.5.7.3 1.1zm1.5-3.3c-.3.5-.9.6-1.4.3-3.5-2.1-8.7-2.7-12.8-1.5-.5.2-1.1-.1-1.3-.7-.2-.5.1-1.1.7-1.3 4.7-1.4 10.5-.7 14.5 1.8.5.3.6.9.3 1.4zm.1-3.4c-4.1-2.5-11-2.7-15-.1-.6.2-1.4 0-1.6-.6-.2-.6 0-1.4.6-1.6 4.6-3 12.2-2.7 17 0 .6.3.7 1.1.4 1.7-.3.5-1 .7-1.4.6z"/></svg>
+        <span class="app-name">Spotify</span>
+      </div>
+
+      <div class="app-tile" data-cat="game" data-name="obs studio stream recorder" onclick="launchApp('obs')">
+        <svg class="app-icon" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm1 14.8c-2.7 0-4.8-2.1-4.8-4.8s2.1-4.8 4.8-4.8 4.8 2.1 4.8 4.8-2.1 4.8-4.8 4.8z"/></svg>
+        <span class="app-name">OBS</span>
+      </div>
+
+      <!-- System -->
+      <div class="app-tile" data-cat="sys" data-name="taskmgr task manager performance" onclick="launchApp('taskmgr')">
+        <svg class="app-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-4 14l-3-6-2 3-1.5-2L7 14H5v-2h2.5l2 2.5 2-3 3 6 2-4h2.5v2H17l-2 3.5z"/></svg>
+        <span class="app-name">Task Mgr</span>
+      </div>
+
+      <div class="app-tile" data-cat="sys" data-name="calc calculator math compute" onclick="launchApp('calc')">
+        <svg class="app-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-6 14H7v-2h6v2zm4 0h-2v-2h2v2zm0-4h-2v-2h2v2zm-4 0h-2v-2h2v2zm-4 0H7v-2h2v2zm8-4H7V7h10v2z"/></svg>
+        <span class="app-name">Calculator</span>
+      </div>
+
+      <div class="app-tile" data-cat="sys" data-name="explorer files documents my computer" onclick="launchApp('explorer')">
+        <svg class="app-icon" viewBox="0 0 24 24"><path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/></svg>
+        <span class="app-name">Files</span>
+      </div>
+
+      <div class="app-tile" data-cat="sys" data-name="chrome google browser internet web" onclick="launchApp('chrome')">
+        <svg class="app-icon" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.44 9.81 8.24 11.41L12 15.4A3.4 3.4 0 0 1 12 8.6h8.4A12 12 0 0 0 12 0zm0 15.4c-1.88 0-3.4-1.52-3.4-3.4s1.52-3.4 3.4-3.4 3.4 1.52 3.4 3.4-1.52 3.4-3.4 3.4zm10.74-6.8H12a6.8 6.8 0 0 0-4.8 2L3.6 3.6A11.9 11.9 0 0 1 12 0c5.31 0 9.81 3.44 11.41 8.24l-.67.36z"/></svg>
+        <span class="app-name">Chrome</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="shared/widget.js"></script>
+  <script>
+    let currentCat = 'all';
+
+    function filterCategory(cat, btn) {
+      currentCat = cat;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      filterApps();
+    }
+
+    function filterApps() {
+      const q = document.getElementById('app-search').value.toLowerCase();
+      const tiles = document.querySelectorAll('.app-tile');
+      let visibleCount = 0;
+
+      tiles.forEach(tile => {
+        const cat = tile.getAttribute('data-cat');
+        const name = tile.getAttribute('data-name');
+        const matchesCat = (currentCat === 'all' || cat === currentCat);
+        const matchesQuery = !q || name.includes(q);
+
+        if (matchesCat && matchesQuery) {
+          tile.style.display = 'flex';
+          visibleCount++;
+        } else {
+          tile.style.display = 'none';
+        }
+      });
+
+      document.getElementById('app-count').innerText = `${visibleCount} APPS`;
+    }
+  </script>
+</body>
+</html>

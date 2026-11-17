@@ -283,3 +283,260 @@ body {
   height: 18px;
   fill: var(--accent-primary);
 }
+
+/* === 10 PRO EXTENSIONS: STYLES FOR DEV DECK, APPS & NOTIFICATIONS === */
+
+/* Live Server Port Sentinel Pills */
+.port-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin: 6px 0;
+}
+
+.port-pill {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  padding: 6px 4px;
+  text-align: center;
+  font-family: 'Consolas', monospace;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.port-pill:hover {
+  border-color: var(--accent-primary);
+  background: var(--bg-hover);
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #475569;
+  box-shadow: 0 0 4px #475569;
+}
+
+.status-dot.active {
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
+}
+
+/* Audio Visualizer Spectrum */
+.audio-spectrum {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 32px;
+  padding: 4px 6px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  gap: 4px;
+}
+
+.spectrum-bar {
+  flex: 1;
+  background: linear-gradient(180deg, var(--accent-primary), var(--accent-secondary));
+  border-radius: 2px;
+  transition: height 0.15s ease;
+  min-height: 4px;
+  box-shadow: 0 0 6px var(--accent-glow);
+}
+
+/* Spartan Focus / Combat Pomodoro Timer */
+.focus-timer-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 6px 0;
+}
+
+.focus-display {
+  font-family: 'Consolas', monospace;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--accent-primary);
+  text-shadow: 0 0 10px var(--accent-glow);
+}
+
+.focus-btn {
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-primary);
+  color: var(--text-main);
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.focus-btn:hover {
+  background: var(--accent-primary);
+  color: #000;
+  box-shadow: 0 0 10px var(--accent-primary);
+}
+
+/* Media Controller Controls */
+.media-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 6px 0;
+}
+
+.media-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.media-btn:hover {
+  border-color: var(--accent-primary);
+  background: var(--accent-soft);
+  box-shadow: 0 0 8px var(--accent-glow);
+}
+
+.media-btn svg {
+  width: 14px;
+  height: 14px;
+  fill: var(--text-main);
+}
+
+/* Notification Toast Banner */
+.notification-banner {
+  display: none;
+  background: rgba(255, 42, 95, 0.15);
+  border: 1px solid #ff2a5f;
+  border-radius: 6px;
+  padding: 6px 10px;
+  margin-bottom: 8px;
+  font-size: 11px;
+  animation: pulse-alert 2s infinite;
+}
+
+.notification-banner.active {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+@keyframes pulse-alert {
+  0%, 100% { box-shadow: 0 0 4px rgba(255, 42, 95, 0.3); }
+  50% { box-shadow: 0 0 14px rgba(255, 42, 95, 0.7); }
+}
+
+/* App Launcher Grid & Search */
+.search-input {
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: var(--text-main);
+  font-size: 12px;
+  margin-bottom: 8px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.search-input:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+
+.apps-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  overflow-y: auto;
+  max-height: 280px;
+  padding-right: 2px;
+}
+
+.app-tile {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 10px 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.app-tile:hover {
+  border-color: var(--accent-primary);
+  background: var(--bg-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+
+.app-icon {
+  width: 24px;
+  height: 24px;
+  fill: var(--accent-primary);
+}
+
+.app-name {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--text-main);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 60px;
+}
+
+/* Process Inspector List */
+.proc-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-card);
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-bottom: 4px;
+  font-size: 11px;
+  font-family: 'Consolas', monospace;
+}
+
+.proc-kill-btn {
+  background: transparent;
+  border: 1px solid #ef4444;
+  color: #ef4444;
+  font-size: 9px;
+  padding: 2px 5px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.proc-kill-btn:hover {
+  background: #ef4444;
+  color: #fff;
+}

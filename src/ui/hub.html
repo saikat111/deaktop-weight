@@ -2,49 +2,56 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <title>Olympus Command Dock</title>
   <link rel="stylesheet" href="shared/theme.css">
   <style>
-    body { padding: 4px; }
+    body { padding: 4px; overflow: hidden; }
     .hub-container {
       background: var(--bg-obsidian);
       border: 1px solid var(--accent-primary);
       border-radius: 8px;
-      padding: 8px 14px;
+      padding: 6px 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.7), 0 0 12px var(--accent-glow);
-      backdrop-filter: blur(16px);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.8), 0 0 16px var(--accent-glow);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      gap: 12px;
     }
     .brand {
       display: flex;
       align-items: center;
       gap: 8px;
       cursor: grab;
+      min-width: 140px;
     }
     .brand:active { cursor: grabbing; }
     .brand-name {
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 800;
-      letter-spacing: 2px;
+      letter-spacing: 1.5px;
       color: var(--text-main);
       text-transform: uppercase;
     }
     .actions {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
+      flex-wrap: nowrap;
     }
     .hub-btn {
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       color: var(--text-main);
-      padding: 4px 10px;
+      padding: 4px 8px;
       border-radius: 4px;
-      font-size: 11px;
-      font-weight: 600;
+      font-size: 10px;
+      font-weight: 700;
       cursor: pointer;
       transition: all 0.2s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
     .hub-btn:hover {
       border-color: var(--accent-primary);
@@ -56,22 +63,91 @@
       background: var(--accent-soft);
       color: var(--accent-primary);
     }
+    .media-cluster {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      border-left: 1px solid var(--border-subtle);
+      border-right: 1px solid var(--border-subtle);
+      padding: 0 8px;
+    }
+    .mini-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .mini-btn:hover {
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+    }
+    .mini-spectrum {
+      display: flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 18px;
+      width: 40px;
+    }
+    .mini-bar {
+      width: 3px;
+      background: var(--accent-primary);
+      border-radius: 1px;
+      min-height: 2px;
+      transition: height 0.1s ease;
+    }
   </style>
 </head>
 <body class="theme-elysium-cyan">
   <div class="hub-container">
+    <!-- Brand / Drag Anchor -->
     <div class="brand pywebview-drag-region">
-      <div class="greek-rune">Ω</div>
-      <div class="brand-name">AEGIS HUD</div>
+      <div class="greek-rune">&#937;</div>
+      <div>
+        <div class="brand-name">MYTHOS HUD</div>
+        <div style="font-size: 8px; color: var(--accent-primary); letter-spacing: 1px;">HELLENIC OS</div>
+      </div>
     </div>
+
+    <!-- Mini Audio Spectrum -->
+    <div class="mini-spectrum" id="spectrum-bars">
+      <div class="mini-bar" style="height: 6px;"></div>
+      <div class="mini-bar" style="height: 12px;"></div>
+      <div class="mini-bar" style="height: 16px;"></div>
+      <div class="mini-bar" style="height: 14px;"></div>
+      <div class="mini-bar" style="height: 8px;"></div>
+      <div class="mini-bar" style="height: 4px;"></div>
+    </div>
+
+    <!-- Audio / Media Controls -->
+    <div class="media-cluster">
+      <button class="mini-btn" title="Previous Track" onclick="triggerMedia('prev')">&#9198;</button>
+      <button class="mini-btn" title="Play / Pause" onclick="triggerMedia('play_pause')">&#9199;</button>
+      <button class="mini-btn" title="Next Track" onclick="triggerMedia('next')">&#9197;</button>
+      <button class="mini-btn" title="Vol Down" onclick="triggerMedia('vol_down')">&#128265;</button>
+      <button class="mini-btn" title="Vol Up" onclick="triggerMedia('vol_up')">&#128266;</button>
+    </div>
+
+    <!-- Widget Toggles -->
     <div class="actions">
-      <button class="hub-btn active" id="btn-forge" onclick="toggle('hephaestus')">FORGE</button>
-      <button class="hub-btn active" id="btn-time" onclick="toggle('chronos')">CHRONOS</button>
-      <button class="hub-btn active" id="btn-sky" onclick="toggle('zeus')">ZEUS</button>
-      <button class="hub-btn active" id="btn-net" onclick="toggle('hermes')">HERMES</button>
-      <button class="hub-btn active" id="btn-codex" onclick="toggle('oracle')">ORACLE</button>
-      <button class="hub-btn" title="Cycle Theme" onclick="cycleTheme()">THEME</button>
-      <button class="hub-btn" style="color:#ff4444; border-color:rgba(255,68,68,0.4);" onclick="quit()">✕</button>
+      <button class="hub-btn active" id="btn-hephaestus" onclick="toggle('hephaestus')">FORGE</button>
+      <button class="hub-btn active" id="btn-chronos" onclick="toggle('chronos')">CHRONOS</button>
+      <button class="hub-btn active" id="btn-zeus" onclick="toggle('zeus')">ZEUS</button>
+      <button class="hub-btn active" id="btn-hermes" onclick="toggle('hermes')">HERMES</button>
+      <button class="hub-btn active" id="btn-oracle" onclick="toggle('oracle')">ORACLE</button>
+      <button class="hub-btn active" id="btn-devdeck" onclick="toggle('devdeck')">DEV DECK</button>
+      <button class="hub-btn active" id="btn-apps" onclick="toggle('apps')">APPS</button>
+      <button class="hub-btn" style="border-color:var(--accent-primary);" title="1-Click Set Windows Wallpaper" onclick="setWall()">WALLPAPER</button>
+      <button class="hub-btn" title="Cycle Cyber Theme" onclick="cycleTheme()">THEME</button>
+      <button class="hub-btn" title="Stealth / Boss Mode" onclick="toggleStealth()">STEALTH</button>
+      <button class="hub-btn" style="color:#ef4444; border-color:rgba(239,68,68,0.5);" onclick="quit()">&#10005;</button>
     </div>
   </div>
 
@@ -83,6 +159,8 @@
     function toggle(widgetName) {
       if (window.pywebview && window.pywebview.api) {
         window.pywebview.api.toggle_widget(widgetName);
+        const btn = document.getElementById(`btn-${widgetName}`);
+        if (btn) btn.classList.toggle('active');
       }
     }
 
@@ -95,9 +173,37 @@
       }
     }
 
+    function setWall() {
+      const t = themes[currentThemeIdx];
+      if (window.pywebview && window.pywebview.api) {
+        window.pywebview.api.set_wallpaper(t);
+      }
+    }
+
+    function toggleStealth() {
+      if (window.pywebview && window.pywebview.api) {
+        window.pywebview.api.toggle_all_visibility();
+      }
+    }
+
     function quit() {
       if (window.pywebview && window.pywebview.api) {
         window.pywebview.api.close_all();
+      }
+    }
+
+    function updateTelemetry(data) {
+      if (!data) return;
+
+      // Update Audio Spectrum Bars
+      if (data.spectrum) {
+        const bars = document.querySelectorAll('.mini-bar');
+        bars.forEach((bar, idx) => {
+          if (data.spectrum[idx] !== undefined) {
+            const h = Math.max(3, Math.round((data.spectrum[idx] / 100) * 18));
+            bar.style.height = `${h}px`;
+          }
+        });
       }
     }
   </script>

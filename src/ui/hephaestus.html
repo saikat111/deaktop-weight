@@ -2,20 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <title>Hephaestus Core Telemetry</title>
   <link rel="stylesheet" href="shared/theme.css">
 </head>
 <body class="theme-elysium-cyan">
   <div class="mythos-card">
     <div class="drag-header pywebview-drag-region">
       <div class="title-group">
-        <div class="greek-rune">⚒</div>
+        <div class="greek-rune">&#9874;</div>
         <div>
           <div class="widget-title">HEPHAESTUS</div>
-          <div class="widget-tag">CORE TELEMETRY</div>
+          <div class="widget-tag">CORE HARDWARE</div>
         </div>
       </div>
       <div style="font-size: 11px; font-family: monospace; color: var(--accent-primary);" id="cpu-cores">6C / 12T</div>
     </div>
+
+    <!-- Notification Toast Banner -->
+    <div id="notification-banner" class="notification-banner"></div>
 
     <!-- Dual Gauges: CPU & RAM -->
     <div class="gauge-container">
@@ -44,16 +48,16 @@
 
     <!-- Frequency & Power stats -->
     <div class="stat-row">
-      <span class="stat-label">CLOCK SPEED</span>
+      <span class="stat-label">CLOCK FREQUENCY</span>
       <span class="stat-val" id="val-freq">3,600 MHz</span>
     </div>
     <div class="stat-row">
       <span class="stat-label">RAM ALLOCATED</span>
-      <span class="stat-val" id="val-ram-gb">0.0 / 8.0 GB</span>
+      <span class="stat-val" id="val-ram-gb">0.0 / 16.0 GB</span>
     </div>
 
     <!-- Storage / Disk -->
-    <div style="margin-top: 10px;">
+    <div style="margin-top: 6px;">
       <div class="stat-row">
         <span class="stat-label">SYSTEM DRIVE (C:)</span>
         <span class="stat-val" id="val-disk-free">-- GB Free</span>
@@ -63,13 +67,35 @@
       </div>
     </div>
 
-    <div style="margin-top: auto; font-size: 10px; color: var(--text-dim); text-align: center; letter-spacing: 1px; font-family: monospace;">
-      ZEN 3 CEZANNE // LIQUID COOLED
+    <!-- Top Memory Consumers & Quick Purge -->
+    <div style="margin-top: 8px;">
+      <div class="stat-row" style="margin-bottom: 4px;">
+        <span class="stat-label">HEAVY PROCESSES</span>
+        <span class="stat-label" style="color:var(--accent-primary);">TOP CONSUMERS</span>
+      </div>
+      <div id="top-procs-list">
+        <div class="proc-row">
+          <span>Standby</span>
+          <span>--%</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: auto; font-size: 9px; color: var(--text-dim); text-align: center; letter-spacing: 1px; font-family: monospace;">
+      ZEN 3 CEZANNE // LIQUID COOLED // VEGA 7
     </div>
   </div>
 
   <script src="shared/widget.js"></script>
   <script>
+    function killPid(pid) {
+      if (confirm(`Terminate process PID ${pid}?`)) {
+        if (window.pywebview && window.pywebview.api) {
+          window.pywebview.api.kill_process(pid);
+        }
+      }
+    }
+
     function updateTelemetry(data) {
       if (!data) return;
       
@@ -90,6 +116,25 @@
       const disk = data.disk.percent;
       document.getElementById('bar-disk').style.width = `${disk}%`;
       document.getElementById('val-disk-free').innerText = `${data.disk.free_gb} GB Free (${disk}%)`;
+
+      // Top Processes
+      if (data.top_procs && data.top_procs.length > 0) {
+        const listEl = document.getElementById('top-procs-list');
+        listEl.innerHTML = data.top_procs.slice(0, 2).map(p => `
+          <div class="proc-row">
+            <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:140px;">${p.name}</span>
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span>${p.mem_pct}%</span>
+              <button class="proc-kill-btn" onclick="killPid(${p.pid})">KILL</button>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      // Alerts
+      if (data.alerts && data.alerts.length > 0) {
+        showNotification(data.alerts[0].title, data.alerts[0].msg, data.alerts[0].type);
+      }
     }
   </script>
 </body>
