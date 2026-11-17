@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Olympus Customizer & Wallpaper Studio</title>
+  <link rel="stylesheet" href="shared/theme.css">
+  <style>
+    body { padding: 8px; overflow-y: auto; }
+    .theme-picker-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin-top: 6px;
+    }
+    .theme-chip {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 8px 4px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 10px;
+      font-weight: 700;
+      transition: all 0.2s;
+    }
+    .theme-chip:hover, .theme-chip.active {
+      border-color: var(--accent-primary);
+      background: var(--accent-soft);
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+    .browse-box {
+      display: flex;
+      gap: 6px;
+      margin-top: 6px;
+    }
+  </style>
+</head>
+<body class="theme-elysium-cyan">
+  <div class="mythos-card" style="height: auto; min-height: 100%;">
+    <div class="drag-header pywebview-drag-region">
+      <div class="title-group">
+        <span class="greek-rune">&#9881;</span>
+        <span class="widget-title">CUSTOMIZER & WALLPAPER</span>
+      </div>
+      <span class="widget-tag" id="current-theme-tag">ELYSIUM CYAN</span>
+    </div>
+
+    <!-- Section 1: Cyber-Hellenic Themes -->
+    <div class="settings-section">
+      <div class="settings-heading">
+        <span>THEME COLORWAYS (ZERO GOLD)</span>
+      </div>
+      <div class="theme-picker-row">
+        <div class="theme-chip" id="chip-elysium_cyan" onclick="selectTheme('elysium_cyan')">
+          <div style="width:12px; height:12px; border-radius:50%; background:#00f0ff; margin:0 auto 4px auto; box-shadow:0 0 6px #00f0ff;"></div>
+          <span>CYAN</span>
+        </div>
+        <div class="theme-chip" id="chip-tartarus_crimson" onclick="selectTheme('tartarus_crimson')">
+          <div style="width:12px; height:12px; border-radius:50%; background:#ff2a5f; margin:0 auto 4px auto; box-shadow:0 0 6px #ff2a5f;"></div>
+          <span>CRIMSON</span>
+        </div>
+        <div class="theme-chip" id="chip-hades_violet" onclick="selectTheme('hades_violet')">
+          <div style="width:12px; height:12px; border-radius:50%; background:#a855f7; margin:0 auto 4px auto; box-shadow:0 0 6px #a855f7;"></div>
+          <span>VIOLET</span>
+        </div>
+        <div class="theme-chip" id="chip-spartan_silver" onclick="selectTheme('spartan_silver')">
+          <div style="width:12px; height:12px; border-radius:50%; background:#e2e8f0; margin:0 auto 4px auto; box-shadow:0 0 6px #e2e8f0;"></div>
+          <span>SILVER</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Wallpaper Studio -->
+    <div class="settings-section">
+      <div class="settings-heading">
+        <span>WALLPAPER STUDIO</span>
+        <span style="font-size:9px; color:var(--text-dim);">1-CLICK WINDOWS APPLY</span>
+      </div>
+      <div class="wallpaper-grid">
+        <div class="wall-card" onclick="applyPresetWall('elysium_cyan')">
+          <div class="wall-swatch swatch-cyan">&#937; ELYSIUM</div>
+          <div class="wall-name">Cyan Sigil</div>
+        </div>
+        <div class="wall-card" onclick="applyPresetWall('tartarus_crimson')">
+          <div class="wall-swatch swatch-crimson">&#937; TARTARUS</div>
+          <div class="wall-name">Crimson Rage</div>
+        </div>
+        <div class="wall-card" onclick="applyPresetWall('hades_violet')">
+          <div class="wall-swatch swatch-violet">&#937; HADES</div>
+          <div class="wall-name">Soulfire Void</div>
+        </div>
+        <div class="wall-card" onclick="applyPresetWall('spartan_silver')">
+          <div class="wall-swatch swatch-silver">&#937; SPARTA</div>
+          <div class="wall-name">Titanium Silver</div>
+        </div>
+      </div>
+
+      <!-- Custom Image File Picker -->
+      <div style="margin-top: 10px;">
+        <span class="form-label">Custom Image File (.png, .jpg)</span>
+        <div class="browse-box">
+          <input type="text" id="custom-wall-input" class="form-input" placeholder="C:\path\to\wallpaper.jpg" />
+          <button class="focus-btn" style="white-space:nowrap;" onclick="browseWall()">BROWSE</button>
+          <button class="focus-btn" style="white-space:nowrap; border-color:var(--border-subtle);" onclick="applyCustomWall()">APPLY</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 3: Interface Opacity & Refresh Rate -->
+    <div class="settings-section">
+      <div class="settings-heading">
+        <span>INTERFACE CONTROLS</span>
+      </div>
+      <div style="margin-bottom: 10px;">
+        <div class="stat-row">
+          <span class="stat-label">Obsidian Glass Opacity</span>
+          <span class="stat-val" id="opacity-val">92%</span>
+        </div>
+        <input type="range" id="opacity-slider" class="range-slider" min="40" max="100" value="92" oninput="changeOpacity(this.value)" />
+      </div>
+
+      <div class="switch-row">
+        <span>Auto-Sync Wallpaper with Theme</span>
+        <input type="checkbox" id="auto-wall-check" onchange="toggleAutoWall(this.checked)" checked />
+      </div>
+      <div class="switch-row">
+        <span>Ultra-Low Game Mode (Backoff Polling)</span>
+        <input type="checkbox" id="game-mode-check" onchange="toggleGameMode(this.checked)" />
+      </div>
+    </div>
+
+    <!-- Section 4: Widget Switchboard -->
+    <div class="settings-section">
+      <div class="settings-heading">
+        <span>WIDGET SWITCHBOARD</span>
+      </div>
+      <div class="switch-row">
+        <span>Hephaestus Core (Hardware)</span>
+        <input type="checkbox" id="chk-hephaestus" onchange="toggleWidgetFromSwitch('hephaestus', this.checked)" checked />
+      </div>
+      <div class="switch-row">
+        <span>Chronos Astrolabe (Time & Lunar)</span>
+        <input type="checkbox" id="chk-chronos" onchange="toggleWidgetFromSwitch('chronos', this.checked)" checked />
+      </div>
+      <div class="switch-row">
+        <span>Zeus Aegis (Weather Oracle)</span>
+        <input type="checkbox" id="chk-zeus" onchange="toggleWidgetFromSwitch('zeus', this.checked)" checked />
+      </div>
+      <div class="switch-row">
+        <span>Hermes Caduceus (Network & Portals)</span>
+        <input type="checkbox" id="chk-hermes" onchange="toggleWidgetFromSwitch('hermes', this.checked)" checked />
+      </div>
+      <div class="switch-row">
+        <span>Oracle of Delphi (Stoic Notes)</span>
+        <input type="checkbox" id="chk-oracle" onchange="toggleWidgetFromSwitch('oracle', this.checked)" checked />
+      </div>
+      <div class="switch-row">
+        <span>Hephaestus Dev Cockpit (Ports & Docker)</span>
+        <input type="checkbox" id="chk-devdeck" onchange="toggleWidgetFromSwitch('devdeck', this.checked)" checked />
+      </div>
+      <div class="switch-row">
+        <span>Pantheon App Launcher</span>
+        <input type="checkbox" id="chk-apps" onchange="toggleWidgetFromSwitch('apps', this.checked)" checked />
+      </div>
+    </div>
+  </div>
+
+  <script src="shared/widget.js"></script>
+  <script>
+    function selectTheme(themeName) {
+      document.querySelectorAll('.theme-chip').forEach(c => c.classList.remove('active'));
+      const chip = document.getElementById(`chip-${themeName}`);
+      if (chip) chip.classList.add('active');
+      document.getElementById('current-theme-tag').innerText = themeName.replace('_', ' ').toUpperCase();
+      
+      updateTheme(themeName);
+      if (window.pywebview && window.pywebview.api) {
+        window.pywebview.api.set_theme(themeName);
+      }
+    }
+
+    function applyPresetWall(themeName) {
+      if (window.pywebview && window.pywebview.api) {
+        window.pywebview.api.set_wallpaper(themeName);
+      }
+    }
+
+    function browseWall() {
+      if (window.pywebview && window.pywebview.api) {
+        window.pywebview.api.browse_and_set_wallpaper().then(path => {
+          if (path) {
+            document.getElementById('custom-wall-input').value = path;
+          }
+        });
+      }
+    }
+
+    function applyCustomWall() {
+      const path = document.getElementById('custom-wall-input').value.trim();
+      if (!path) return;
+      if (window.pywebview && window.pywebview.api) {
+        window.pywebview.api.set_wallpaper(path);
+      }
+    }
+
+    function changeOpacity(val) {
+      document.getElementById('opacity-val').innerText = `${val}%`;
+      const alpha = (val / 100).toFixed(2);
+      if (window.pywebview && window.pywebview.api) {
+        window.pywebview.api.set_opacity(parseFloat(alpha));
+      }
+    }
+
+    function toggleAutoWall(checked) {
+      if (window.pywebview && window.pywebview.api) {
+        window.pywebview.api.set_config_value('auto_wallpaper', checked);
+      }
+    }
+
+    function toggleGameMode(checked) {
+      if (window.pywebview && window.pywebview.api) {
+        window.pywebview.api.toggle_game_mode();
+      }
+    }
+
+    function toggleWidgetFromSwitch(name, checked) {
+      if (window.pywebview && window.pywebview.api) {
+        window.pywebview.api.toggle_widget(name);
+      }
+    }
+
+    window.addEventListener('pywebviewready', function() {
+      if (window.pywebview && window.pywebview.api) {
+        window.pywebview.api.get_config().then(cfg => {
+          if (!cfg) return;
+          if (cfg.theme) {
+            selectTheme(cfg.theme);
+          }
+          if (cfg.opacity) {
+            const pct = Math.round(cfg.opacity * 100);
+            document.getElementById('opacity-slider').value = pct;
+            document.getElementById('opacity-val').innerText = `${pct}%`;
+          }
+          if (cfg.custom_wallpaper_path) {
+            document.getElementById('custom-wall-input').value = cfg.custom_wallpaper_path;
+          }
+          if (cfg.auto_wallpaper !== undefined) {
+            document.getElementById('auto-wall-check').checked = cfg.auto_wallpaper;
+          }
+          if (cfg.widgets) {
+            for (const [wName, wCfg] of Object.entries(cfg.widgets)) {
+              const chk = document.getElementById(`chk-${wName}`);
+              if (chk) chk.checked = wCfg.enabled !== false;
+            }
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

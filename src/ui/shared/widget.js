@@ -12,6 +12,12 @@ function updateTheme(themeName) {
   document.body.className = `theme-${themeName.replace(/_/g, '-')}`;
 }
 
+function updateOpacity(alpha) {
+  if (alpha !== undefined) {
+    document.documentElement.style.setProperty('--bg-obsidian', `rgba(10, 12, 18, ${alpha})`);
+  }
+}
+
 function showNotification(title, msg, type = 'warn') {
   let banner = document.getElementById('notification-banner');
   if (!banner) return;
@@ -49,8 +55,9 @@ function triggerWallpaper(themeName) {
 window.addEventListener('pywebviewready', function() {
   if (window.pywebview && window.pywebview.api) {
     window.pywebview.api.get_config().then(cfg => {
-      if (cfg && cfg.theme) {
-        updateTheme(cfg.theme);
+      if (cfg) {
+        if (cfg.theme) updateTheme(cfg.theme);
+        if (cfg.opacity) updateOpacity(cfg.opacity);
       }
     });
   }

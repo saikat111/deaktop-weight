@@ -139,6 +139,12 @@ def set_theme_wallpaper(theme_name):
         target_file = generate_mythos_wallpaper(theme_name)
     return apply_windows_wallpaper(target_file)
 
+def set_custom_wallpaper(image_path):
+    """Applies an arbitrary custom user image as the desktop wallpaper."""
+    if not image_path or not os.path.exists(image_path):
+        return False
+    return apply_windows_wallpaper(image_path)
+
 if __name__ == "__main__":
     path = generate_mythos_wallpaper("elysium_cyan")
     print(f"Generated: {path}")

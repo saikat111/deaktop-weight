@@ -540,3 +540,208 @@ body {
   background: #ef4444;
   color: #fff;
 }
+
+/* === APP MANAGER (ADD / REMOVE APP) STYLES === */
+.app-tile {
+  position: relative;
+}
+
+.app-delete-badge {
+  display: none;
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 18px;
+  height: 18px;
+  background: #ef4444;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 16px;
+  text-align: center;
+  box-shadow: 0 0 6px #ef4444;
+  cursor: pointer;
+  z-index: 10;
+  transition: transform 0.15s;
+}
+
+.app-delete-badge:hover {
+  transform: scale(1.2);
+}
+
+.edit-mode-active .app-delete-badge {
+  display: block;
+}
+
+/* Modal Overlay & Forms */
+.mythos-modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 999;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+}
+
+.mythos-modal-overlay.active {
+  display: flex;
+}
+
+.mythos-modal {
+  background: var(--bg-obsidian);
+  border: 1px solid var(--accent-primary);
+  border-radius: 8px;
+  box-shadow: 0 0 24px var(--accent-glow);
+  padding: 16px;
+  width: 100%;
+  max-width: 330px;
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+.form-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 4px;
+}
+
+.form-input, .form-select {
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  padding: 6px 10px;
+  color: var(--text-main);
+  font-size: 11px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.form-input:focus, .form-select:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 8px var(--accent-glow);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+/* === SETTINGS & WALLPAPER STUDIO STYLES === */
+.settings-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+}
+
+.settings-heading {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.range-slider {
+  width: 100%;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  cursor: pointer;
+  box-shadow: 0 0 8px var(--accent-primary);
+}
+
+/* Wallpaper Preset Grid */
+.wallpaper-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.wall-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.wall-card:hover, .wall-card.active {
+  border-color: var(--accent-primary);
+  background: var(--accent-soft);
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+
+.wall-swatch {
+  height: 38px;
+  border-radius: 4px;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 12px;
+}
+
+.swatch-cyan { background: linear-gradient(135deg, #080b10, #00f0ff); color: #fff; }
+.swatch-crimson { background: linear-gradient(135deg, #10080a, #ff2a5f); color: #fff; }
+.swatch-violet { background: linear-gradient(135deg, #0e0812, #a855f7); color: #fff; }
+.swatch-silver { background: linear-gradient(135deg, #0f1217, #e2e8f0); color: #000; }
+
+.wall-name {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-main);
+  text-transform: uppercase;
+}
+
+/* Switchboard Checkbox Rows */
+.switch-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 0;
+  font-size: 11px;
+}
+
+.custom-switch {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}

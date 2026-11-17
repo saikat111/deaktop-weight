@@ -5,26 +5,37 @@
   <title>Olympus Command Dock</title>
   <link rel="stylesheet" href="shared/theme.css">
   <style>
-    body { padding: 4px; overflow: hidden; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: transparent;
+      box-sizing: border-box;
+    }
     .hub-container {
       background: var(--bg-obsidian);
       border: 1px solid var(--accent-primary);
       border-radius: 8px;
-      padding: 6px 14px;
+      padding: 4px 12px;
+      margin: 2px;
+      height: calc(100% - 4px);
+      box-sizing: border-box;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.8), 0 0 16px var(--accent-glow);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.8), 0 0 16px var(--accent-glow);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      gap: 12px;
+      gap: 8px;
     }
     .brand {
       display: flex;
       align-items: center;
       gap: 8px;
       cursor: grab;
-      min-width: 140px;
+      flex-shrink: 0;
     }
     .brand:active { cursor: grabbing; }
     .brand-name {
@@ -33,18 +44,27 @@
       letter-spacing: 1.5px;
       color: var(--text-main);
       text-transform: uppercase;
+      line-height: 1.1;
     }
-    .actions {
+    .brand-sub {
+      font-size: 8px;
+      color: var(--accent-primary);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .nav-cluster {
       display: flex;
       align-items: center;
-      gap: 5px;
-      flex-wrap: nowrap;
+      gap: 4px;
+      flex-shrink: 1;
+      overflow-x: auto;
     }
+    .nav-cluster::-webkit-scrollbar { display: none; }
     .hub-btn {
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       color: var(--text-main);
-      padding: 4px 8px;
+      padding: 4px 7px;
       border-radius: 4px;
       font-size: 10px;
       font-weight: 700;
@@ -52,6 +72,8 @@
       transition: all 0.2s ease;
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
     .hub-btn:hover {
       border-color: var(--accent-primary);
@@ -66,24 +88,26 @@
     .media-cluster {
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 3px;
       border-left: 1px solid var(--border-subtle);
       border-right: 1px solid var(--border-subtle);
-      padding: 0 8px;
+      padding: 0 6px;
+      flex-shrink: 0;
     }
     .mini-btn {
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       color: var(--text-main);
-      width: 24px;
-      height: 24px;
+      width: 22px;
+      height: 22px;
       border-radius: 4px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 11px;
+      font-size: 10px;
       cursor: pointer;
       transition: all 0.15s;
+      flex-shrink: 0;
     }
     .mini-btn:hover {
       border-color: var(--accent-primary);
@@ -93,8 +117,10 @@
       display: flex;
       align-items: flex-end;
       gap: 2px;
-      height: 18px;
-      width: 40px;
+      height: 16px;
+      width: 32px;
+      margin-right: 4px;
+      flex-shrink: 0;
     }
     .mini-bar {
       width: 3px;
@@ -103,31 +129,46 @@
       min-height: 2px;
       transition: height 0.1s ease;
     }
+    .actions-right {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0;
+    }
   </style>
 </head>
 <body class="theme-elysium-cyan">
   <div class="hub-container">
     <!-- Brand / Drag Anchor -->
     <div class="brand pywebview-drag-region">
-      <div class="greek-rune">&#937;</div>
+      <div class="greek-rune" style="width:24px; height:24px; font-size:13px;">&#937;</div>
       <div>
         <div class="brand-name">MYTHOS HUD</div>
-        <div style="font-size: 8px; color: var(--accent-primary); letter-spacing: 1px;">HELLENIC OS</div>
+        <div class="brand-sub">HELLENIC OS</div>
       </div>
     </div>
 
-    <!-- Mini Audio Spectrum -->
-    <div class="mini-spectrum" id="spectrum-bars">
-      <div class="mini-bar" style="height: 6px;"></div>
-      <div class="mini-bar" style="height: 12px;"></div>
-      <div class="mini-bar" style="height: 16px;"></div>
-      <div class="mini-bar" style="height: 14px;"></div>
-      <div class="mini-bar" style="height: 8px;"></div>
-      <div class="mini-bar" style="height: 4px;"></div>
+    <!-- Navigation Widgets -->
+    <div class="nav-cluster">
+      <button class="hub-btn active" id="btn-hephaestus" onclick="toggle('hephaestus')">FORGE</button>
+      <button class="hub-btn active" id="btn-chronos" onclick="toggle('chronos')">TIME</button>
+      <button class="hub-btn active" id="btn-zeus" onclick="toggle('zeus')">ZEUS</button>
+      <button class="hub-btn active" id="btn-hermes" onclick="toggle('hermes')">NET</button>
+      <button class="hub-btn active" id="btn-oracle" onclick="toggle('oracle')">NOTES</button>
+      <button class="hub-btn active" id="btn-devdeck" onclick="toggle('devdeck')">DEV DECK</button>
+      <button class="hub-btn active" id="btn-apps" onclick="toggle('apps')">APPS</button>
+      <button class="hub-btn" id="btn-settings" style="border-color:var(--accent-primary);" onclick="toggle('settings')">SETTINGS</button>
     </div>
 
-    <!-- Audio / Media Controls -->
+    <!-- Audio / Media Controls & Spectrum -->
     <div class="media-cluster">
+      <div class="mini-spectrum" id="spectrum-bars">
+        <div class="mini-bar" style="height: 6px;"></div>
+        <div class="mini-bar" style="height: 12px;"></div>
+        <div class="mini-bar" style="height: 15px;"></div>
+        <div class="mini-bar" style="height: 10px;"></div>
+        <div class="mini-bar" style="height: 4px;"></div>
+      </div>
       <button class="mini-btn" title="Previous Track" onclick="triggerMedia('prev')">&#9198;</button>
       <button class="mini-btn" title="Play / Pause" onclick="triggerMedia('play_pause')">&#9199;</button>
       <button class="mini-btn" title="Next Track" onclick="triggerMedia('next')">&#9197;</button>
@@ -135,19 +176,12 @@
       <button class="mini-btn" title="Vol Up" onclick="triggerMedia('vol_up')">&#128266;</button>
     </div>
 
-    <!-- Widget Toggles -->
-    <div class="actions">
-      <button class="hub-btn active" id="btn-hephaestus" onclick="toggle('hephaestus')">FORGE</button>
-      <button class="hub-btn active" id="btn-chronos" onclick="toggle('chronos')">CHRONOS</button>
-      <button class="hub-btn active" id="btn-zeus" onclick="toggle('zeus')">ZEUS</button>
-      <button class="hub-btn active" id="btn-hermes" onclick="toggle('hermes')">HERMES</button>
-      <button class="hub-btn active" id="btn-oracle" onclick="toggle('oracle')">ORACLE</button>
-      <button class="hub-btn active" id="btn-devdeck" onclick="toggle('devdeck')">DEV DECK</button>
-      <button class="hub-btn active" id="btn-apps" onclick="toggle('apps')">APPS</button>
-      <button class="hub-btn" style="border-color:var(--accent-primary);" title="1-Click Set Windows Wallpaper" onclick="setWall()">WALLPAPER</button>
+    <!-- Actions Right -->
+    <div class="actions-right">
+      <button class="hub-btn" style="border-color:var(--accent-primary);" title="1-Click Set Desktop Wallpaper" onclick="setWall()">WALL</button>
       <button class="hub-btn" title="Cycle Cyber Theme" onclick="cycleTheme()">THEME</button>
       <button class="hub-btn" title="Stealth / Boss Mode" onclick="toggleStealth()">STEALTH</button>
-      <button class="hub-btn" style="color:#ef4444; border-color:rgba(239,68,68,0.5);" onclick="quit()">&#10005;</button>
+      <button class="hub-btn" style="color:#ef4444; border-color:rgba(239,68,68,0.5); padding:4px 8px;" title="Close MythosHUD" onclick="quit()">&#10005;</button>
     </div>
   </div>
 
@@ -200,7 +234,7 @@
         const bars = document.querySelectorAll('.mini-bar');
         bars.forEach((bar, idx) => {
           if (data.spectrum[idx] !== undefined) {
-            const h = Math.max(3, Math.round((data.spectrum[idx] / 100) * 18));
+            const h = Math.max(3, Math.round((data.spectrum[idx] / 100) * 16));
             bar.style.height = `${h}px`;
           }
         });

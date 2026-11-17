@@ -16,8 +16,7 @@ Strictly **NO GOLD / NO TACKY SKINS** — styled in pure matte obsidian glass, n
 ```
    ┌────────────────────────────────────────────────────────────────────────────────────────┐
    │                                  Ω  MYTHOS COMMAND DOCK                                │
-   │  [FORGE] [CHRONOS] [ZEUS] [HERMES] [ORACLE] [DEV DECK] [APPS] [WALLPAPER] [STEALTH]  │
-   │  [⏮ ⏯ ⏭ 🔉 🔊]  ılılılı (AUDIO SPECTRUM)                                             │
+   │  [FORGE] [TIME] [ZEUS] [NET] [NOTES] [COCKPIT] [APPS] [SETTINGS]  [⏮ ⏯ ⏭ 🔉 🔊] [WALL] │
    └────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -28,15 +27,18 @@ Strictly **NO GOLD / NO TACKY SKINS** — styled in pure matte obsidian glass, n
 * **Gaming Ping Radar:** Live latency probe in milliseconds (`ms`) to Cloudflare DNS (`1.1.1.1`) with divine/optimal latency badges.
 * **Spartan Combat Focus Mode:** 25-minute Pomodoro deep-work timer with live progress bar and completion alerts.
 
-### 2. ☵ Pantheon App Launcher (`apps.html`)
+### 2. ☵ Pantheon App Launcher & Manager (`apps.html`)
+* **Dynamic App Grid:** Preloaded with essential Developer, Gaming, and System applications.
+* **Add Custom Applications (`+ ADD`):** Modal dialog to add any local `.exe`, system command, or web URL with category assignment.
+* **Remove Applications (`EDIT` Mode):** Toggle edit mode to display glowing delete badges and remove unwanted app tiles with 1 click.
 * **Instant Filter Search:** Filter across applications and CLI tools as you type.
-* **Developer Tools:** 1-click launchers for **VS Code**, **Windows Terminal / PowerShell**, **Docker Desktop**, and **Git Bash**.
-* **Gaming & Media:** 1-click launchers for **Steam**, **Discord**, **Spotify**, and **OBS Studio**.
-* **System Utilities:** Instant access to **Task Manager**, **Calculator**, **File Explorer**, and **Chrome / Edge**.
 
-### 3. 🖼️ In-Built Dynamic Wallpaper Engine (`src/wallpaper.py`)
-* Generates 4K procedural Cyber-Hellenic dark obsidian wallpapers on-the-fly with constellation networks, sacred geometry astrolabe sigils, and Greek meander (key) fretwork borders.
-* **1-Click Apply:** Click the **WALLPAPER** button on the Command Dock to apply the matching wallpaper directly to your Windows desktop via native Win32 `SystemParametersInfoW`.
+### 3. 🛠️ Olympus Customizer & Wallpaper Studio (`settings.html`)
+* **Theme Colorway Presets:** 1-Click live theme switching between *Elysium Cyan*, *Tartarus Crimson*, *Hades Violet*, and *Spartan Silver*.
+* **1-Click Procedural Wallpapers:** Apply matching 4K geometric Cyber-Hellenic wallpapers directly to Windows desktop via native Win32 `SystemParametersInfoW`.
+* **Custom Background Support:** Select any local `.png` or `.jpg` photo via the native Windows file dialog to set as your desktop background.
+* **Obsidian Glass Opacity Slider:** Real-time control of widget transparency from 40% to 100%.
+* **Widget Switchboard:** Dedicated checkboxes to enable or disable any individual widget instantly.
 
 ### 4. ⚒️ Hephaestus Core Telemetry (`hephaestus.html`)
 * **Hardware Gauges:** Dual radial SVG gauges for CPU and RAM load with glow pulses.
@@ -70,23 +72,6 @@ Strictly **NO GOLD / NO TACKY SKINS** — styled in pure matte obsidian glass, n
 | **`hades_violet`** | Void Black + Ethereal Soulfire Violet (`#a855f7`) | Underworld amethyst & chthonic mystery |
 | **`spartan_silver`** | Titanium Slate + Frost White / Chrome (`#e2e8f0`) | Polished Spartan armor & Olympus peaks |
 
-> **Cycle Themes:** Click **THEME** on the Command Dock to instantly re-theme all widgets simultaneously.
-
----
-
-## 🚀 10 Community-Requested Power Features
-
-1. **Local Port Sentinel:** Never guess whether your Next.js or FastAPI server is running.
-2. **Docker Engine Sentinel:** Instant visibility into container states without opening heavy dashboards.
-3. **Audio Spectrum Visualizer:** Reactive frequency visualizer animated on the HUD.
-4. **Hardware Multimedia Controls:** Play/Pause, Next, Prev, Volume keys via Windows user32.
-5. **Spartan Focus Mode:** Pomodoro timer built right into your HUD.
-6. **Hardware & Notification Toasts:** Visual alert banners for high CPU (>85%) or saturated RAM.
-7. **Gaming Ping Radar:** Continuous low-overhead latency testing to `1.1.1.1`.
-8. **Stealth / Boss Mode:** 1-click button to hide or show all widgets immediately.
-9. **RAM Purge & Process Killer:** Quick identification and termination of memory-hungry tasks.
-10. **Game Mode Efficiency:** Polling adapts dynamically so widget telemetry never impacts game FPS.
-
 ---
 
 ## 📥 Quick Start & Installation
@@ -110,28 +95,32 @@ python src/main.py
 
 ## ⚙️ Configuration (`config.json`)
 
-All widget coordinates, dimensions, and toggle states are saved in `config.json`:
+All widget coordinates, dimensions, custom apps, and preferences are saved in `config.json`:
 
 ```json
 {
   "theme": "elysium_cyan",
   "opacity": 0.92,
   "refresh_rate_ms": 1000,
+  "auto_wallpaper": true,
+  "custom_wallpaper_path": "",
+  "apps": [ ... ],
   "widgets": {
-    "hub": { "enabled": true, "x": 20, "y": 30, "width": 860, "height": 75 },
-    "hephaestus": { "enabled": true, "x": 20, "y": 120, "width": 360, "height": 430 },
-    "hermes": { "enabled": true, "x": 20, "y": 565, "width": 360, "height": 280 },
-    "devdeck": { "enabled": true, "x": 395, "y": 120, "width": 370, "height": 440 },
-    "apps": { "enabled": true, "x": 395, "y": 575, "width": 370, "height": 380 },
-    "chronos": { "enabled": true, "x": 1520, "y": 30, "width": 360, "height": 320 },
-    "zeus": { "enabled": true, "x": 1520, "y": 365, "width": 360, "height": 260 },
-    "oracle": { "enabled": true, "x": 1520, "y": 640, "width": 360, "height": 340 }
+    "hub": { "enabled": true, "x": 20, "y": 25, "width": 920, "height": 68 },
+    "hephaestus": { "enabled": true, "x": 20, "y": 105, "width": 360, "height": 430 },
+    "hermes": { "enabled": true, "x": 20, "y": 550, "width": 360, "height": 280 },
+    "devdeck": { "enabled": true, "x": 395, "y": 105, "width": 370, "height": 430 },
+    "apps": { "enabled": true, "x": 395, "y": 550, "width": 370, "height": 390 },
+    "settings": { "enabled": false, "x": 780, "y": 105, "width": 430, "height": 520 },
+    "chronos": { "enabled": true, "x": 1520, "y": 25, "width": 360, "height": 320 },
+    "zeus": { "enabled": true, "x": 1520, "y": 360, "width": 360, "height": 260 },
+    "oracle": { "enabled": true, "x": 1520, "y": 635, "width": 360, "height": 340 }
   }
 }
 ```
 
 * **Repositioning:** Simply click and drag any widget by its top title bar.
-* **Toggle Widgets:** Click widget buttons on the Command Dock to hide or restore individual panels.
+* **Toggle Widgets:** Click widget buttons on the Command Dock or check them in the Settings switchboard.
 
 ---
 

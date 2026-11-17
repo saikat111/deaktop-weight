@@ -3,34 +3,36 @@
   "opacity": 0.92,
   "locked": false,
   "refresh_rate_ms": 1000,
+  "auto_wallpaper": true,
+  "custom_wallpaper_path": "",
+  "apps": [
+    { "id": "vscode", "name": "VS Code", "cmd": "vscode", "cat": "dev", "removable": false },
+    { "id": "terminal", "name": "Terminal", "cmd": "terminal", "cat": "dev", "removable": false },
+    { "id": "docker", "name": "Docker", "cmd": "docker", "cat": "dev", "removable": false },
+    { "id": "gitbash", "name": "Git Bash", "cmd": "gitbash", "cat": "dev", "removable": false },
+    { "id": "steam", "name": "Steam", "cmd": "steam", "cat": "game", "removable": false },
+    { "id": "discord", "name": "Discord", "cmd": "discord", "cat": "game", "removable": false },
+    { "id": "spotify", "name": "Spotify", "cmd": "spotify", "cat": "game", "removable": false },
+    { "id": "obs", "name": "OBS Studio", "cmd": "obs", "cat": "game", "removable": false },
+    { "id": "taskmgr", "name": "Task Mgr", "cmd": "taskmgr", "cat": "sys", "removable": false },
+    { "id": "calc", "name": "Calculator", "cmd": "calc", "cat": "sys", "removable": false },
+    { "id": "explorer", "name": "Files", "cmd": "explorer", "cat": "sys", "removable": false },
+    { "id": "chrome", "name": "Chrome", "cmd": "chrome", "cat": "sys", "removable": false }
+  ],
   "widgets": {
     "hub": {
       "enabled": true,
       "x": 20,
-      "y": 40,
-      "width": 380,
-      "height": 95
+      "y": 25,
+      "width": 920,
+      "height": 68
     },
     "hephaestus": {
       "enabled": true,
       "x": 20,
-      "y": 150,
+      "y": 105,
       "width": 360,
-      "height": 380
-    },
-    "chronos": {
-      "enabled": true,
-      "x": 1520,
-      "y": 40,
-      "width": 360,
-      "height": 320
-    },
-    "zeus": {
-      "enabled": true,
-      "x": 1520,
-      "y": 380,
-      "width": 360,
-      "height": 260
+      "height": 430
     },
     "hermes": {
       "enabled": true,
@@ -39,12 +41,47 @@
       "width": 360,
       "height": 280
     },
+    "devdeck": {
+      "enabled": true,
+      "x": 395,
+      "y": 105,
+      "width": 370,
+      "height": 430
+    },
+    "apps": {
+      "enabled": true,
+      "x": 395,
+      "y": 550,
+      "width": 370,
+      "height": 390
+    },
+    "settings": {
+      "enabled": false,
+      "x": 780,
+      "y": 105,
+      "width": 430,
+      "height": 520
+    },
+    "chronos": {
+      "enabled": true,
+      "x": 1520,
+      "y": 25,
+      "width": 360,
+      "height": 320
+    },
+    "zeus": {
+      "enabled": true,
+      "x": 1520,
+      "y": 360,
+      "width": 360,
+      "height": 260
+    },
     "oracle": {
       "enabled": true,
       "x": 1520,
-      "y": 660,
+      "y": 635,
       "width": 360,
-      "height": 320
+      "height": 340
     }
   }
 }
