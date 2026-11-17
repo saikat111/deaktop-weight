@@ -15,18 +15,28 @@ if exist "%APPDATA%\uv\tools\windows-mcp\Scripts\python.exe" (
     )
 )
 
-echo [1/2] Installing Python dependencies with %PYTHON_CMD%...
-%PYTHON_CMD% -m pip install -r "%~dp0requirements.txt"
+echo [1/2] Checking environment and dependencies...
+if not exist "%~dp0dist\MythosHUD\MythosHUD.exe" (
+    echo Installing Python dependencies with %PYTHON_CMD%...
+    %PYTHON_CMD% -m pip install -r "%~dp0requirements.txt"
+)
 
 echo.
 echo [2/2] Creating Desktop Shortcut...
-powershell -NoProfile -Command "& { $WshShell = New-Object -comObject WScript.Shell; $Shortcut = $WshShell.CreateShortcut([Environment]::GetFolderPath('Desktop') + '\MythosHUD.lnk'); $Shortcut.TargetPath = '%~dp0run.bat'; $Shortcut.WorkingDirectory = '%~dp0'; $Shortcut.Save() }"
+set "TARGET_EXE=%~dp0run.bat"
+set "WORKING_DIR=%~dp0"
+if exist "%~dp0dist\MythosHUD\MythosHUD.exe" (
+    set "TARGET_EXE=%~dp0dist\MythosHUD\MythosHUD.exe"
+    set "WORKING_DIR=%~dp0dist\MythosHUD"
+)
+
+powershell -NoProfile -Command "& { $WshShell = New-Object -comObject WScript.Shell; $Shortcut = $WshShell.CreateShortcut([Environment]::GetFolderPath('Desktop') + '\MythosHUD.lnk'); $Shortcut.TargetPath = '%TARGET_EXE%'; $Shortcut.WorkingDirectory = '%WORKING_DIR%'; $Shortcut.Save() }"
 
 echo.
 echo ========================================================
 echo   [SUCCESS] MythosHUD has been installed!
 echo   Double-click the 'MythosHUD' shortcut on your Desktop
-echo   or run 'run.bat' to launch the widgets suite anytime.
+echo   to launch the suite anytime.
 echo ========================================================
 echo.
 pause
